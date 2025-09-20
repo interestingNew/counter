@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import './App.css';
+import './App.module.css';
+import classes from './App.module.css';
+import { WrapperCounter } from './components/WrapperCounter/WrapperCounter';
 
 function App() {
   const [value, setValue] = useState(0)
@@ -42,13 +44,14 @@ function App() {
   // }
 
   return (
-    <div className="App">
-      <h1>{value}</h1>
+    <div className={classes.app}>
+      {/* <h1>{value}</h1>
       <button onClick={incHandler}>inc</button>
-      {/* <button onClick={setLocalStorageHandler}>setLocalStorage</button>
-      <button onClick={getLocalStorageHandler}>getLocalStorage</button> */}
+      <button onClick={setLocalStorageHandler}>setLocalStorage</button>
+      <button onClick={getLocalStorageHandler}>getLocalStorage</button>
       <button onClick={clearStorageHandler}>clearStorage</button>
-      {/* <button onClick={remItemHandler}>remItem</button> */}
+      <button onClick={remItemHandler}>remItem</button> */}
+      <WrapperCounter/>
     </div>
   );
 }
