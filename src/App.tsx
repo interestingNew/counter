@@ -4,23 +4,23 @@ import classes from './App.module.css';
 import { WrapperCounter } from './components/WrapperCounter/WrapperCounter';
 
 function App() {
-  const [value, setValue] = useState(0)
+  // const [value, setValue] = useState(0)
 
-  useEffect(() => {
-    let getVal = localStorage.getItem("counterValue")
-    if(getVal) {
-      let parseVal = JSON.parse(getVal)
-      setValue(parseVal)
-    }
-  }, [])
+  // useEffect(() => {
+  //   let getVal = localStorage.getItem("counterValue")
+  //   if(getVal) {
+  //     let parseVal = JSON.parse(getVal)
+  //     setValue(parseVal)
+  //   }
+  // }, [])
 
-  useEffect(() => {
-    localStorage.setItem("counterValue", JSON.stringify(value))
-  }, [value])
+  // useEffect(() => {
+  //   localStorage.setItem("counterValue", JSON.stringify(value))
+  // }, [value])
 
-  const incHandler = () => {
-    setValue(value + 1)
-  }
+  // const incHandler = () => {
+  //   setValue(value + 1)
+  // }
 
   // const setLocalStorageHandler = () => {
   //   localStorage.setItem("counterValue", JSON.stringify(value))
@@ -34,13 +34,13 @@ function App() {
   //   }
   // }
 
-  const clearStorageHandler = () => {
-    localStorage.clear()
-    setValue(0)
-  }
+  // const clearStorageHandler = () => {
+  //   localStorage.clear()
+  //   setValue(0)
+  // }
 
   // const remItemHandler = () => {
-  //   localStorage.removeItem("counterValue2")
+  //   localStorage.removeItem("counterValue")
   // }
 
   return (

@@ -9,8 +9,8 @@
    border-radius: 15px;
    border: #B0B0B0, solid, 5px;
    margin: 30px;
-   font-size: 100px;
    height: 250px;
+   font-size: 100px;
    display: grid;
    justify-items: center;
    align-items: center;
@@ -40,4 +40,5 @@
    font-weight: bold;
    padding-left: 25px;
    padding-right: 25px;
+   cursor: pointer;
 }
