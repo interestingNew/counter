@@ -9,6 +9,7 @@ type SettingsCounterProps = {
    startValue: number
    setStartValue: (startVal: number)=>void
    saveSettingsValue: ()=>void
+   setValueStrCounter: (incorrect: string)=>void
 }
 
 export const SettingsCounter = (props: SettingsCounterProps) => {
@@ -16,11 +17,19 @@ export const SettingsCounter = (props: SettingsCounterProps) => {
    const buttonSetHandler = () => {
          props.saveSettingsValue()
    }
-   const inputMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-      props.setMaxValue(parseInt(e.currentTarget.value))
+   const changeInputMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      let parseVal = parseInt(e.currentTarget.value);
+      props.setMaxValue(parseVal);
+      (parseVal <= 0 || parseVal <= props.startValue)?
+      props.setValueStrCounter("incorrect values") : 
+      props.setValueStrCounter("enter values and press 'set'")
    }
-   const inputStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-      props.setStartValue(parseInt(e.currentTarget.value))
+   const changeInputStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      let parseVal = parseInt(e.currentTarget.value);
+      props.setStartValue(parseVal);
+      (parseVal < 0 || parseVal >= props.maxValue)?
+      props.setValueStrCounter("incorrect values") : 
+      props.setValueStrCounter("enter values and press 'set'")
    }
 
 return (
@@ -30,14 +39,14 @@ return (
             <div className={classes.inputMaxValue}>
                <input type="number"
                value={props.maxValue}
-               onChange={inputMaxValueHandler}
+               onChange={changeInputMaxValueHandler}
                />
             </div>
             <div className={classes.startValue}>start value:</div>
             <div className={classes.inputStartValue}>
                <input type="number"
                value={props.startValue}
-               onChange={inputStartValueHandler}/>
+               onChange={changeInputStartValueHandler}/>
             </div>
          </div>
          <div className={classes.elements2}>

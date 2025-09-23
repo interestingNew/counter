@@ -3,13 +3,15 @@ import './Counter.module.css'
 import classes from './Counter.module.css'
 
 type CounterProps = {
-   valueCounter: number
+   valueNumCounter: number
    incValue: ()=>void
    resetValue: ()=>void
+   startValue: number
+   valueStrCounter: string|null
 }
 
 export const Counter = (props:CounterProps) => {
-   
+
    const resValHandler = () => {
       props.resetValue()
    }
@@ -17,11 +19,11 @@ export const Counter = (props:CounterProps) => {
    const incValHandler = () => {
       props.incValue()
    }
-   
+
    return (
       <div className={classes.wrapper}>
          <div className={classes.elements1}>
-            <div className={classes.value}>{props.valueCounter}</div>
+            {props.valueStrCounter? <div className={classes.strValue}>{props.valueStrCounter}</div> : <div className={classes.numValue}>{props.valueNumCounter}</div>}
          </div>
          <div className={classes.elements2}>
             <div className={classes.button1}>

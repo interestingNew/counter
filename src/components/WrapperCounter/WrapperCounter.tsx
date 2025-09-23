@@ -9,29 +9,34 @@ export const WrapperCounter = () => {
 
    const [maxValue, setMaxValue] = useState(0)
    const [startValue, setStartValue] = useState(0)
-   const [valueCounter, setValueCounter] = useState(0)
+   const [valueNumCounter, setValueNumCounter] = useState(0)
+   const [valueStrCounter, setValueStrCounter] = useState<string|null>(null)
 
    const saveSettingsValue = () => {
          localStorage.setItem("startValue", JSON.stringify(startValue))
          setMaxValue(maxValue)
-         setValueCounter(startValue)
+         setValueNumCounter(startValue)
+         setValueStrCounter(null)
    }
    const resetValue = () => {
       localStorage.clear()
-      setValueCounter(startValue)
+      setValueNumCounter(startValue)
    }
    const incValue = () => {
-      if(valueCounter < maxValue) {
-         setValueCounter(valueCounter + 1)
+      if(valueNumCounter < maxValue) {
+         setValueNumCounter(valueNumCounter + 1)
       }
    }
+   
+
    useEffect(() => {
       let getVal = localStorage.getItem("startValue")
       if (getVal) {
-         setValueCounter(JSON.parse(getVal))
+         setValueNumCounter(JSON.parse(getVal))
          setStartValue(JSON.parse(getVal))
       }
    }, [])
+
 
    return <div className={classes.wrapperCounter}>
       <SettingsCounter
@@ -39,10 +44,13 @@ export const WrapperCounter = () => {
          setMaxValue={setMaxValue}
          startValue={startValue}
          setStartValue={setStartValue}
-         saveSettingsValue={saveSettingsValue} />
+         saveSettingsValue={saveSettingsValue}
+         setValueStrCounter={setValueStrCounter} />
       <Counter
-         valueCounter={valueCounter}
+         valueNumCounter={valueNumCounter}
          incValue={incValue}
-         resetValue={resetValue} />
+         resetValue={resetValue}
+         startValue={startValue}
+         valueStrCounter={valueStrCounter} />
    </div>
 }
