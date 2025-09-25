@@ -16,9 +16,18 @@
    align-items: center;
 }
 
+.strValueError {
+   font-size: 50px;
+   color: #a10202;
+}
+
 .strValue {
    font-size: 50px;
    color: #B0B0B0;
+}
+
+.numValueError {
+   color: #a10202;
 }
 
 .numValue {

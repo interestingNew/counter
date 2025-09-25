@@ -12,7 +12,7 @@
    font-size: 50px;
    display: grid;
    grid-template-areas: "A B"
-      "C D";
+                        "C D";
 }
 
 .maxValue {
@@ -21,9 +21,14 @@
    margin: auto;
 }
 
-.inputMaxValue {
+.divInputMaxValue {
    grid-area: B;
    margin: auto;
+}
+
+.inputValueError {
+   border: #a10202, solid, 10px;
+   background-color: #c96767;
 }
 
 input {
@@ -31,6 +36,9 @@ input {
    width: 200px;
    font-size: 25px;
    text-align: center;
+   border-radius: 10px;
+   border: #B0B0B0, solid, 10px;
+   background-color: #fcfcfc;
 }
 
 .startValue {
@@ -39,9 +47,14 @@ input {
    margin: auto;
 }
 
-.inputStartValue {
+.divInputStartValue {
    grid-area: D;
    margin: auto;
+}
+
+.inputStartValueError {
+   border: #a10202, solid, 10px;
+   background-color: #c96767;
 }
 
 .elements2 {

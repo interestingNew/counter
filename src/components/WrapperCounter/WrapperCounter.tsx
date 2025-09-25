@@ -3,17 +3,17 @@ import classes from './WrapperCounter.module.css'
 import { SettingsCounter } from './SettingsCounter/SettingsCounter'
 import { Counter } from './Counter/Counter'
 import { useState, useEffect } from 'react'
-import { ChangeEvent } from 'react'
 
 export const WrapperCounter = () => {
 
-   const [maxValue, setMaxValue] = useState(0)
+   const [maxValue, setMaxValue] = useState(1)
    const [startValue, setStartValue] = useState(0)
    const [valueNumCounter, setValueNumCounter] = useState(0)
    const [valueStrCounter, setValueStrCounter] = useState<string|null>(null)
 
    const saveSettingsValue = () => {
          localStorage.setItem("startValue", JSON.stringify(startValue))
+         localStorage.setItem("maxValue", JSON.stringify(maxValue))
          setMaxValue(maxValue)
          setValueNumCounter(startValue)
          setValueStrCounter(null)
@@ -28,12 +28,14 @@ export const WrapperCounter = () => {
       }
    }
    
-
    useEffect(() => {
-      let getVal = localStorage.getItem("startValue")
-      if (getVal) {
-         setValueNumCounter(JSON.parse(getVal))
-         setStartValue(JSON.parse(getVal))
+      let getValStartValue = localStorage.getItem("startValue")
+      let getValMaxValue = localStorage.getItem("maxValue")
+      if (getValStartValue) {
+         setValueNumCounter(JSON.parse(getValStartValue))
+         setStartValue(JSON.parse(getValStartValue))
+      } if (getValMaxValue) {
+         setMaxValue(JSON.parse(getValMaxValue))
       }
    }, [])
 
@@ -45,12 +47,15 @@ export const WrapperCounter = () => {
          startValue={startValue}
          setStartValue={setStartValue}
          saveSettingsValue={saveSettingsValue}
-         setValueStrCounter={setValueStrCounter} />
+         valueStrCounter={valueStrCounter}
+         setValueStrCounter={setValueStrCounter}
+         valueNumCounter={valueNumCounter} />
       <Counter
          valueNumCounter={valueNumCounter}
          incValue={incValue}
          resetValue={resetValue}
          startValue={startValue}
-         valueStrCounter={valueStrCounter} />
+         valueStrCounter={valueStrCounter}
+         maxValue={maxValue} />
    </div>
 }

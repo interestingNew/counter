@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react'
 import './Counter.module.css'
 import classes from './Counter.module.css'
 
 type CounterProps = {
    valueNumCounter: number
-   incValue: ()=>void
-   resetValue: ()=>void
+   incValue: () => void
+   resetValue: () => void
    startValue: number
-   valueStrCounter: string|null
+   valueStrCounter: string | null
+   maxValue: number
 }
 
-export const Counter = (props:CounterProps) => {
+export const Counter = (props: CounterProps) => {
 
    const resValHandler = () => {
       props.resetValue()
@@ -23,7 +23,13 @@ export const Counter = (props:CounterProps) => {
    return (
       <div className={classes.wrapper}>
          <div className={classes.elements1}>
-            {props.valueStrCounter? <div className={classes.strValue}>{props.valueStrCounter}</div> : <div className={classes.numValue}>{props.valueNumCounter}</div>}
+            {props.valueStrCounter ?
+               props.valueStrCounter === "Incorrect values!" ?
+                  <div className={classes.strValueError}>{props.valueStrCounter}</div> :
+                  <div className={classes.strValue}>{props.valueStrCounter}</div> :
+               props.valueNumCounter === props.maxValue ?
+                  <div className={classes.numValueError}>{props.valueNumCounter}</div> :
+                  <div className={classes.numValue}>{props.valueNumCounter}</div>}
          </div>
          <div className={classes.elements2}>
             <div className={classes.button1}>
