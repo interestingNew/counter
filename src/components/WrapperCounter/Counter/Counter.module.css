@@ -28,6 +28,7 @@
 
 .numValueError {
    color: #a10202;
+   font-size: 135px;
 }
 
 .numValue {
@@ -44,15 +45,4 @@
    grid-template-columns: 1fr 1fr;
    justify-items: center;
    align-items: center;
-}
-
-.button {
-   border-radius: 15px;
-   background-color: #B0B0B0;
-   font-size: 65px;
-   font-family: 'Comfortaa', sans-serif;
-   font-weight: bold;
-   padding-left: 25px;
-   padding-right: 25px;
-   cursor: pointer;
 }
