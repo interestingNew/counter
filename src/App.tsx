@@ -1,13 +1,13 @@
-import './App.module.css';
-import classes from './App.module.css';
-import { WrapperCounter } from './components/WrapperCounter/WrapperCounter';
+import './App.module.css'
+import classes from './App.module.css'
+import { Counter } from './components/Counter/Counter'
 
 function App() {
-  return (
-    <div className={classes.app}>
-      <WrapperCounter/>
-    </div>
-  )
+	return (
+		<div className={classes.app}>
+			<Counter />
+		</div>
+	)
 }
 
-export default App;
+export default App
