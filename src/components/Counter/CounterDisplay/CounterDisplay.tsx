@@ -3,13 +3,14 @@ import classes from './CounterDisplay.module.css'
 import { Button } from '../Button/Button'
 import { INCORRECT_VALUE } from '../Counter'
 
-type CounterProps = {
+type CounterPropsType = {
 	displayValue: number
 	onIncButtonClick: () => void
 	onResetButtonClick: () => void
 	helperText: string
 	maxValue: number
 	disabledIncButton: boolean
+	startValue: number
 }
 
 export const CounterDisplay = ({
@@ -19,7 +20,8 @@ export const CounterDisplay = ({
 	onResetButtonClick,
 	helperText,
 	maxValue,
-}: CounterProps) => {
+	startValue
+}: CounterPropsType) => {
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.elements1}>
@@ -57,7 +59,7 @@ export const CounterDisplay = ({
 					<Button
 						title='reset'
 						onClick={onResetButtonClick}
-						disabled={!!helperText}
+						disabled={startValue === displayValue || !!helperText}
 					/>
 				</div>
 			</div>

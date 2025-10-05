@@ -16,21 +16,7 @@ export const Counter = () => {
 	const [helperText, setHelperText] = useState("enter values and press 'set'")
 	const [disabledIncButton, setDisabledIncButton] = useState(false)
 
-	useEffect(() => {
-		let storedStartValue = localStorage.getItem('startValue')
-		let storedMaxValue = localStorage.getItem('maxValue')
-		if (storedStartValue && storedMaxValue) {
-			const startValue = JSON.parse(storedStartValue)
-
-			setDisplayValue(startValue)
-			setStartValue(startValue)
-			setMaxValue(JSON.parse(storedMaxValue))
-			setHelperText('')
-			setDisabledButtonSet(true)
-		}
-	}, [])
-
-	const onSetClick = () => {
+	const onSetButtonClick = () => {
 		localStorage.setItem('startValue', JSON.stringify(startValue))
 		localStorage.setItem('maxValue', JSON.stringify(maxValue))
 
@@ -55,35 +41,48 @@ export const Counter = () => {
 	const changeInputMaxValueClick = (e: ChangeEvent<HTMLInputElement>) => {
 		let parseVal = parseInt(e.currentTarget.value)
 		setMaxValue(parseVal)
-		setDisabledButtonSet(false)
-
-		const isIncorrectValue = parseVal <= 0 || parseVal <= startValue
-		setHelperText(isIncorrectValue ? INCORRECT_VALUE : CORRECT_VALUE)
+		const isIncorrectMaxValue = parseVal <= 0 || parseVal <= startValue;
+		setHelperText(isIncorrectMaxValue ? INCORRECT_VALUE : CORRECT_VALUE)
+		setDisabledButtonSet(isIncorrectMaxValue)
 	}
 
-	// TODO: отрефакторить по аналогии с changeInputMaxValueClick
 	const changeInputStartValueClick = (e: ChangeEvent<HTMLInputElement>) => {
 		let parseVal = parseInt(e.currentTarget.value)
 		setStartValue(parseVal)
-		setDisabledButtonSet(false)
-		parseVal < 0 || parseVal >= maxValue
-			? setHelperText(INCORRECT_VALUE)
-			: setHelperText(CORRECT_VALUE)
+		const isIncorrectStartValue = parseVal < 0 || parseVal >= maxValue
+		setHelperText(isIncorrectStartValue? INCORRECT_VALUE : CORRECT_VALUE)
+		setDisabledButtonSet(isIncorrectStartValue)
 	}
-
+	
 	useEffect(() => {
 		if (helperText === INCORRECT_VALUE) {
 			setDisabledButtonSet(true)
+			setDisabledIncButton(true)
 		}
 
-		// if (!!helperText) {
-		// 	setDisabledIncButton(true)
-		// }
+		if (helperText === CORRECT_VALUE) {
+			setDisabledIncButton(true)
+		}
 	}, [helperText])
 
 	useEffect(() => {
+		let storedStartValue = localStorage.getItem('startValue')
+		let storedMaxValue = localStorage.getItem('maxValue')
+		if (storedStartValue && storedMaxValue) {
+			const startValue = JSON.parse(storedStartValue)
+
+			setDisplayValue(startValue)
+			setStartValue(startValue)
+			setMaxValue(JSON.parse(storedMaxValue))
+			setHelperText('')
+			setDisabledButtonSet(true)
+			setDisabledIncButton(false)
+		}
+	}, [])
+
+	useEffect(() => {
 		if (displayValue >= maxValue) {
-			setDisabledIncButton(!disabledIncButton)
+			setDisabledIncButton(true)
 		}
 	}, [displayValue])
 
@@ -92,7 +91,7 @@ export const Counter = () => {
 			<CounterSettings
 				maxValue={maxValue}
 				startValue={startValue}
-				onSetClick={onSetClick}
+				onSetButtonClick={onSetButtonClick}
 				disabledSetButton={disabledButtonSet}
 				changeInputMaxValueClick={changeInputMaxValueClick}
 				changeInputStartValueClick={changeInputStartValueClick}
@@ -104,6 +103,7 @@ export const Counter = () => {
 				helperText={helperText}
 				maxValue={maxValue}
 				disabledIncButton={disabledIncButton}
+				startValue={startValue}
 			/>
 		</div>
 	)

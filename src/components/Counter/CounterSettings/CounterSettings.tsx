@@ -1,13 +1,12 @@
 import { Button } from '../Button/Button'
-import { INCORRECT_VALUE } from '../Counter'
 import './CounterSettings.module.css'
 import classes from './CounterSettings.module.css'
 import { ChangeEvent } from 'react'
 
-type SettingsCounterProps = {
+type CounterSettingsPropsType = {
 	maxValue: number
 	startValue: number
-	onSetClick: () => void
+	onSetButtonClick: () => void
 	disabledSetButton: boolean
 	changeInputMaxValueClick: (e: ChangeEvent<HTMLInputElement>) => void
 	changeInputStartValueClick: (e: ChangeEvent<HTMLInputElement>) => void
@@ -15,12 +14,12 @@ type SettingsCounterProps = {
 
 export const CounterSettings = ({
 	disabledSetButton,
-	onSetClick,
+	onSetButtonClick,
 	startValue,
 	maxValue,
 	changeInputMaxValueClick,
 	changeInputStartValueClick,
-}: SettingsCounterProps) => {
+}: CounterSettingsPropsType) => {
 	const isErrorMaxValue = maxValue <= 0 || maxValue <= startValue
 	const isErrorStartValue = startValue < 0 || startValue >= maxValue
 
@@ -55,7 +54,7 @@ export const CounterSettings = ({
 			<div className={classes.elements2}>
 				<Button
 					title='set'
-					onClick={onSetClick}
+					onClick={onSetButtonClick}
 					disabled={disabledSetButton}
 				/>
 			</div>
