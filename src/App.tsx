@@ -1,11 +1,11 @@
 import './App.module.css';
 import classes from './App.module.css';
-import { WrapperCounter } from './components/WrapperCounter/WrapperCounter';
+import { Counter } from './components/Counter/Counter';
 
 function App() {
   return (
     <div className={classes.app}>
-      <WrapperCounter/>
+      <Counter/>
     </div>
   )
 }
