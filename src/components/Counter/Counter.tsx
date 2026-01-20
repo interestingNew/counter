@@ -2,93 +2,98 @@ import './Counter.module.css'
 import classes from './Counter.module.css'
 import { CounterSettings } from './CounterSettings/CounterSettings'
 import { CounterDisplay } from './CounterDisplay/CounterDisplay'
-import { useState, useEffect, ChangeEvent } from 'react'
+import { useEffect, ChangeEvent } from 'react'
+import { useAppSelector } from '../../common/hooks/useAppSelector'
+import { selectCounterSettingsData } from '../../model/counterSettings-selector'
+import { selectCounterDisplayData } from '../../model/counterDisplay-selector'
+import { useAppDispatch } from '../../common/hooks/useAppDispatch'
+import { changeDisabledButtonIncAC, changeDisabledButtonResAC, changeValueStrCounterAC, incValueNumCounterAC, setValueNumCounterAC } from '../../model/counterDisplay-reducer'
+import { changeDisabledButtonSetAC, changeMaxValueAC, changeStartValueAC } from '../../model/counterSettings-reducer'
 
 let INCORRECT_VALUE = "Incorrect values!";
 let CORRECT_VALUE = "enter values and press 'set'";
 
 export const Counter = () => {
+   const counterSettingsData = useAppSelector(selectCounterSettingsData)
+   const counterDisplayData = useAppSelector(selectCounterDisplayData)
 
-   const [maxValue, setMaxValue] = useState(1)
-   const [startValue, setStartValue] = useState(0)
-   const [disabledButtonSet, setDisabledButtonSet] = useState(false)
+   const dispatch = useAppDispatch()
 
-   const [valueNumCounter, setValueNumCounter] = useState(0)
-   const [valueStrCounter, setValueStrCounter] = useState<string | null>("enter values and press 'set'")
-   const [disabledButtonInc, setDisabledButtonSetInc] = useState(false)
-
-   useEffect(() => {
-      let getValStartValue = localStorage.getItem("startValue")
-      let getValMaxValue = localStorage.getItem("maxValue")
+   // useEffect(() => {
+   //    let getValStartValue = localStorage.getItem("startValue")
+   //    let getValMaxValue = localStorage.getItem("maxValue")
       
-      if (getValStartValue && getValMaxValue) {
-         setValueNumCounter(JSON.parse(getValStartValue))
-         setStartValue(JSON.parse(getValStartValue))
-         setMaxValue(JSON.parse(getValMaxValue))
-         setValueStrCounter(null)
-         setDisabledButtonSet(true)
-      }
-   }, [])
+   //    if (getValStartValue && getValMaxValue) {
+   //       setValueNumCounter(JSON.parse(getValStartValue))
+   //       setStartValue(JSON.parse(getValStartValue))
+   //       setMaxValue(JSON.parse(getValMaxValue))
+   //       setValueStrCounter('')
+   //       setDisabledButtonSet(true)
+   //    }
+   // }, [])
    useEffect(() => {
-      if (valueNumCounter >= maxValue) {
-         setDisabledButtonSetInc(!disabledButtonInc)
+      if (counterDisplayData.valueNumCounter >= counterSettingsData.maxValue) {
+         dispatch(changeDisabledButtonIncAC(!counterDisplayData.disabledButtonInc))
       }
-   }, [valueNumCounter])
+   }, [counterDisplayData.valueNumCounter])
 
    const onSetButtonClick = () => {
-      localStorage.setItem("startValue", JSON.stringify(startValue))
-      localStorage.setItem("maxValue", JSON.stringify(maxValue))
+      dispatch(setValueNumCounterAC(counterSettingsData.startValue))
+      dispatch(changeValueStrCounterAC(''))
+      dispatch(changeDisabledButtonSetAC(!counterSettingsData.disabledButtonSet))
       
-      setMaxValue(maxValue)
-      setValueNumCounter(startValue)
-      setValueStrCounter(null)
-      setDisabledButtonSet(!disabledButtonSet)
-      if (disabledButtonInc) {
-         setDisabledButtonSetInc(!disabledButtonInc)
+      if (counterDisplayData.disabledButtonInc) {
+         dispatch(changeDisabledButtonIncAC(!counterDisplayData.disabledButtonInc))
+         //dispatch(changeDisabledButtonResAC(!counterDisplayData.disabledButtonRes))
       }
    }
    const onIncButtonClick = () => {
-      if (valueNumCounter < maxValue) {
-         setValueNumCounter(valueNumCounter + 1)
+      if (counterDisplayData.valueNumCounter < counterSettingsData.maxValue) {
+         dispatch(incValueNumCounterAC(1))
+         dispatch(changeDisabledButtonResAC(false))
       }
    }
    const onResetButtonClick = () => {
-      setValueNumCounter(startValue)
-      setDisabledButtonSetInc(false)
+      dispatch(setValueNumCounterAC(counterSettingsData.startValue))
+      dispatch(changeDisabledButtonIncAC(false))
+      dispatch(changeDisabledButtonResAC(true))
    }
 
    const changeInputMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
          let parseVal = parseInt(e.currentTarget.value);
-         setMaxValue(parseVal);
-         setDisabledButtonSet(false);
-         (parseVal <= 0 || parseVal <= startValue) ?
-            setValueStrCounter(INCORRECT_VALUE) :
-            setValueStrCounter(CORRECT_VALUE)
+
+         dispatch(changeMaxValueAC(parseVal))
+
+         if(counterSettingsData.startValue >= 0) {
+            dispatch(changeDisabledButtonSetAC(false))
+         }
+
+         (parseVal <= 0 || parseVal <= counterSettingsData.startValue) ?
+            dispatch(changeValueStrCounterAC(INCORRECT_VALUE)) :
+            dispatch(changeValueStrCounterAC(CORRECT_VALUE))
       }
    const changeInputStartValue = (e: ChangeEvent<HTMLInputElement>) => {
          let parseVal = parseInt(e.currentTarget.value);
-         setStartValue(parseVal);
-         setDisabledButtonSet(false);
-         (parseVal < 0 || parseVal >= maxValue) ?
-            setValueStrCounter(INCORRECT_VALUE) :
-            setValueStrCounter(CORRECT_VALUE)
+
+         dispatch(changeStartValueAC(parseVal))
+         dispatch(changeDisabledButtonSetAC(false));
+
+         (parseVal < 0 || parseVal >= counterSettingsData.maxValue) ?
+         dispatch(changeValueStrCounterAC(INCORRECT_VALUE)) :
+         dispatch(changeValueStrCounterAC(CORRECT_VALUE))
       }
 
    return <div className={classes.wrapperCounter}>
       <CounterSettings
-         maxValue={maxValue}
-         startValue={startValue}
+         counterSettingsData={counterSettingsData}
+         counterDisplayData={counterDisplayData}
          changeInputMaxValue={changeInputMaxValue}
          changeInputStartValue={changeInputStartValue}
-         onSetButtonClick={onSetButtonClick}
-         valueStrCounter={valueStrCounter}
-         disabledButtonSet={disabledButtonSet}/>
+         onSetButtonClick={onSetButtonClick} />
       <CounterDisplay
-         valueNumCounter={valueNumCounter}
+         counterDisplayData={counterDisplayData}
+         counterSettingsData={counterSettingsData}
          onIncButtonClick={onIncButtonClick}
-         onResetButtonClick={onResetButtonClick}
-         valueStrCounter={valueStrCounter}
-         maxValue={maxValue}
-         disabledButtonInc={disabledButtonInc} />
+         onResetButtonClick={onResetButtonClick} />
    </div>
 }

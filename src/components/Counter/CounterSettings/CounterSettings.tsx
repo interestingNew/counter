@@ -1,32 +1,32 @@
+import { counterDisplayDataType } from "../../../model/counterDisplay-reducer"
+import { counterSettingsDataType } from "../../../model/counterSettings-reducer"
 import { Button } from "../Button/Button"
 import "./CounterSettings.module.css"
 import classes from "./CounterSettings.module.css"
 import { ChangeEvent } from "react"
 
 type CounterSettingsProps = {
-   maxValue: number
-   startValue: number
+   counterSettingsData: counterSettingsDataType
+   counterDisplayData: counterDisplayDataType
    changeInputMaxValue: (e: ChangeEvent<HTMLInputElement>) => void
    changeInputStartValue: (e: ChangeEvent<HTMLInputElement>) => void
    onSetButtonClick: () => void
-   valueStrCounter: string | null
-   disabledButtonSet: boolean
 }
 
 export const CounterSettings = (props: CounterSettingsProps) => {
 
    const {
-      maxValue,
-      startValue,
+      counterSettingsData,
+      counterDisplayData,
       changeInputMaxValue,
       changeInputStartValue,
-      onSetButtonClick,
-      valueStrCounter,
-      disabledButtonSet
+      onSetButtonClick
    } = props
 
-   const isErrorMaxValue = maxValue <= 0 || maxValue <= startValue
-   const isErrorStartValue = startValue < 0 || startValue >= maxValue
+
+
+   const isErrorMaxValue = counterSettingsData.maxValue <= 0 || counterSettingsData.maxValue <= counterSettingsData.startValue
+   const isErrorStartValue = counterSettingsData.startValue < 0 || counterSettingsData.startValue >= counterSettingsData.maxValue
 
    return (
       <div className={classes.wrapper}>
@@ -35,21 +35,21 @@ export const CounterSettings = (props: CounterSettingsProps) => {
             <div className={classes.divInputMaxValue}>
                <input className={isErrorMaxValue ? classes.inputValueError : ''}
                   type="number"
-                  value={maxValue}
+                  value={counterSettingsData.maxValue}
                   onChange={changeInputMaxValue} />
             </div>
             <div className={classes.startValue}>start value:</div>
             <div className={classes.divInputStartValue}>
                <input className={isErrorStartValue ? classes.inputStartValueError : ''}
                   type="number"
-                  value={startValue}
+                  value={counterSettingsData.startValue}
                   onChange={changeInputStartValue} />
             </div>
          </div>
          <div className={classes.elements2}>
             <Button title="set"
                onClick={onSetButtonClick}
-               disabled={disabledButtonSet || valueStrCounter === "Incorrect values!"} />
+               disabled={counterSettingsData.disabledButtonSet || counterDisplayData.valueStrCounter === "Incorrect values!"} />
          </div>
       </div>
    )
